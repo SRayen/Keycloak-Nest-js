@@ -1,4 +1,5 @@
 export class UserRepresentation {
+  id: string;
   username: string;
   firstName: string;
   lastName: string;
