@@ -46,10 +46,61 @@ export class KeycloackService {
           },
         }),
       );
+      console.log('send emaillllllllllllllllllllllllll..............');
+      await this.sendVerificationEmail(user, token);
     } catch (error) {
       console.error(error);
       throw new Error('Failed to create user: ' + error.message);
     }
+  }
+  async sendVerificationEmail(user: UserRepresentation, token: string) {
+    const users = await this.getUserByUserName(user, token);
+    const userId: string = users[0].id;
+    try {
+      const params = new URLSearchParams({
+        client_id: this.clientId,
+        redirect_uri: this.redirectUrl,
+      });
+      console.log('token=>', token);
+      await firstValueFrom(
+        this.httpService.put(
+          `${this.keycloakAdminUrl}/users/${userId}/send-verify-email?${params.toString()}`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ),
+      );
+    } catch (error) {
+      console.error('Error sending verification email', error);
+    }
+  }
+  async getUserByUserName(
+    user: UserRepresentation,
+    token: string,
+  ): Promise<UserRepresentation> {
+    const params = new URLSearchParams({
+      first: '0',
+      max: '1',
+      exact: 'true',
+      username: user.username,
+    });
+    console.log('user=>', user);
+
+    const response = await firstValueFrom(
+      this.httpService.get(
+        `${this.keycloakAdminUrl}/users?${params.toString()}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      ),
+    );
+    console.log('response.data=>', response.data);
+    return response.data;
   }
 
   async updateUser(newUser: UpdateUser, userId: string): Promise<void> {
