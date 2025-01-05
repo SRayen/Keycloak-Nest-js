@@ -46,7 +46,7 @@ export class KeycloackService {
           },
         }),
       );
-      console.log('send emaillllllllllllllllllllllllll..............');
+
       await this.sendVerificationEmail(user, token);
     } catch (error) {
       console.error(error);
@@ -61,7 +61,7 @@ export class KeycloackService {
         client_id: this.clientId,
         redirect_uri: this.redirectUrl,
       });
-      console.log('token=>', token);
+
       await firstValueFrom(
         this.httpService.put(
           `${this.keycloakAdminUrl}/users/${userId}/send-verify-email?${params.toString()}`,
@@ -87,7 +87,6 @@ export class KeycloackService {
       exact: 'true',
       username: user.username,
     });
-    console.log('user=>', user);
 
     const response = await firstValueFrom(
       this.httpService.get(
@@ -99,7 +98,7 @@ export class KeycloackService {
         },
       ),
     );
-    console.log('response.data=>', response.data);
+
     return response.data;
   }
 
