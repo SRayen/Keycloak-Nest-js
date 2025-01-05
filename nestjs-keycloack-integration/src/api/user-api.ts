@@ -7,7 +7,7 @@ export class UserApi {
   constructor(private readonly keycloackService: KeycloackService) {}
 
   @Post()
-  async login(@Body() newUSer: NewUser): Promise<void> {
-    await this.keycloackService.createUser(newUSer);
+  async createNewUser(@Body() newUser: NewUser): Promise<void> {
+    await this.keycloackService.createUser(newUser);
   }
 }

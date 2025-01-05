@@ -38,9 +38,9 @@ export class KeycloackService {
       user.credentials = [credential];
       user.enabled = true;
       user.emailVerified = false;
-
+      console.log('this.keycloakAdminUrl=>', this.keycloakAdminUrl);
       await firstValueFrom(
-        this.httpService.post(`${this.keycloakAdminUrl}/users}`, user, {
+        this.httpService.post(`${this.keycloakAdminUrl}/users`, user, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -65,6 +65,7 @@ export class KeycloackService {
           },
         }),
       );
+
       const { access_token } = response.data;
       return access_token;
     } catch (error) {

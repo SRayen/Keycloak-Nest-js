@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
+import { UserApi } from './api/user-api';
+import { KeycloackService } from './keycloack/keycloack.service';
 
 @Module({
   imports: [
@@ -13,7 +15,7 @@ import configuration from './config/configuration';
       load: [configuration],
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, UserApi],
+  providers: [AppService, KeycloackService],
 })
 export class AppModule {}
